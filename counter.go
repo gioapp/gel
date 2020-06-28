@@ -1,14 +1,16 @@
 package gel
 
+import "gioui.org/widget"
+
 type DuoUIcounter struct {
 	Value           int
 	OperateValue    int
 	From            int
 	To              int
-	CounterInput    *Editor
-	CounterIncrease *Button
-	CounterDecrease *Button
-	CounterReset    *Button
+	CounterInput    *widget.Editor
+	CounterIncrease *widget.Clickable
+	CounterDecrease *widget.Clickable
+	CounterReset    *widget.Clickable
 }
 
 func (c *DuoUIcounter) Increase() {

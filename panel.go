@@ -2,6 +2,7 @@ package gel
 
 import (
 	"gioui.org/layout"
+	"gioui.org/widget"
 )
 
 type Panel struct {
@@ -32,8 +33,8 @@ func NewPanel() *Panel {
 				OperateValue: 1,
 				pressed:      false,
 			},
-			Up:   new(Button),
-			Down: new(Button),
+			Up:   new(widget.Clickable),
+			Down: new(widget.Clickable),
 		},
 	}
 }
@@ -48,7 +49,7 @@ func (p *Panel) Layout(gtx *layout.Context) {
 	}
 	if p.ScrollBar.Slider.pressed {
 		cs := gtx.Constraints
-		if p.ScrollBar.Slider.Position >= 0 && p.ScrollBar.Slider.Position <= cs.Height.Max-p.ScrollBar.Slider.CursorHeight {
+		if p.ScrollBar.Slider.Position >= 0 && p.ScrollBar.Slider.Position <= cs.Max.Y-p.ScrollBar.Slider.CursorHeight {
 			p.ScrollBar.Slider.Cursor = p.ScrollBar.Slider.Position
 			p.PanelContentLayout.Position.First = int(float32(p.ScrollBar.Slider.Position) / p.ScrollUnit)
 			p.PanelContentLayout.Position.Offset = 0

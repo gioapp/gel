@@ -3,6 +3,7 @@ package gel
 import (
 	"gioui.org/io/pointer"
 	"gioui.org/layout"
+	"gioui.org/widget"
 )
 
 type item struct {
@@ -16,8 +17,8 @@ func (it *item) doSlide(n int) {
 type ScrollBar struct {
 	Size   int
 	Slider *Slider
-	Up     *Button
-	Down   *Button
+	Up     *widget.Clickable
+	Down   *widget.Clickable
 }
 
 type Slider struct {
@@ -63,5 +64,5 @@ func (s *Slider) Layout(gtx *layout.Context) {
 		}
 	}
 	cs := gtx.Constraints
-	s.Height = cs.Height.Max
+	s.Height = cs.Max.Y
 }
