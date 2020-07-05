@@ -4,13 +4,8 @@ package theme
 
 import (
 	"gioui.org/widget"
-	"image/color"
-
 	"github.com/w-ingsolutions/c/pkg/logo"
 
-	"gioui.org/f32"
-	"gioui.org/layout"
-	"gioui.org/op/paint"
 	"golang.org/x/exp/shiny/materialdesign/icons"
 )
 

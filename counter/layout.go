@@ -29,7 +29,7 @@ type DuoUIcounterStyle struct {
 	shaper       text.Shaper
 }
 
-func DuoUIcounterSt(t *theme.DuoUItheme, cc *DuoUIcounter, pageFunction func(gtx layout.Context) layout.Dimensions) DuoUIcounterStyle {
+func DuoUIcounterSt(t *theme.DuoUItheme, cc *DuoUIcounter, pageFunction func()) DuoUIcounterStyle {
 	return DuoUIcounterStyle{
 		// ToDo Replace theme's buttons with counter exclusive buttons, set icons for increase/decrease
 		increase:     iconButton(t.T, t.Icons["counterPlusIcon"], cc.CounterIncrease, t.Colors["Primary"]),
