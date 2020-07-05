@@ -1,4 +1,4 @@
-package gel
+package counter
 
 import "gioui.org/widget"
 

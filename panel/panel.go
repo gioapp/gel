@@ -1,4 +1,4 @@
-package gel
+package panel
 
 import (
 	"gioui.org/layout"

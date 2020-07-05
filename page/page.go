@@ -1,4 +1,4 @@
-package gel
+package page
 
 type DuoUIpage struct {
 	Name    string
