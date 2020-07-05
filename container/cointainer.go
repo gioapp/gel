@@ -49,7 +49,7 @@ func DuoUIcontainer(t *theme.DuoUItheme, padding int, background string) DuoUIco
 	}
 }
 
-func (d *DuoUIcontainerStyle) Layout(t *theme.DuoUItheme, gtx layout.Context, direction layout.Direction, itemContent func(gtx layout.Context) layout.Dimensions) layout.Dimensions {
+func (d *DuoUIcontainerStyle) Layout(gtx layout.Context, direction layout.Direction, itemContent func(gtx layout.Context) layout.Dimensions) layout.Dimensions {
 	//hmin := gtx.Constraints.Min.X
 	//vmin := gtx.Constraints.Min.Y
 	//if d.FullWidth {
