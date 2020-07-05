@@ -6,7 +6,6 @@ import (
 	"gioui.org/op/clip"
 	"gioui.org/op/paint"
 	"gioui.org/unit"
-	"github.com/gioapp/gel/theme"
 	"image"
 )
 
@@ -32,7 +31,7 @@ func DuoUIdrawRectangle(gtx layout.Context, w, h int, color string, borderRadius
 	})
 }
 
-func DuoUIfill(gtx *layout.Context, col string) layout.Dimensions {
+func DuoUIfill(gtx layout.Context, col string) {
 	cs := gtx.Constraints
 	d := image.Point{X: cs.Min.X, Y: cs.Min.Y}
 	dr := f32.Rectangle{
@@ -40,18 +39,28 @@ func DuoUIfill(gtx *layout.Context, col string) layout.Dimensions {
 	}
 	paint.ColorOp{Color: HexARGB(col)}.Add(gtx.Ops)
 	paint.PaintOp{Rect: dr}.Add(gtx.Ops)
-	return layout.Dimensions{Size: d}
+	//gtx.Dimensions = layout.Dimensions{Size: d}
 }
 
-func DuoUIline(t *theme.DuoUItheme, gtx layout.Context, verticalPadding, horizontalPadding float32, size int, color string) func() {
-	return func() {
-		layout.Inset{
+func DuoUIline(vert bool, verticalPadding, horizontalPadding float32, size int, color string) func(gtx layout.Context) layout.Dimensions {
+	return func(gtx layout.Context) layout.Dimensions {
+		return layout.Inset{
 			Top:    unit.Dp(verticalPadding),
 			Right:  unit.Dp(horizontalPadding),
 			Bottom: unit.Dp(verticalPadding),
 			Left:   unit.Dp(horizontalPadding),
 		}.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
-			return DuoUIdrawRectangle(gtx, gtx.Constraints.Max.X, size, color, [4]float32{0, 0, 0, 0}, [4]float32{0, 0, 0, 0})
+			v := size
+			h := gtx.Constraints.Max.X
+			if vert {
+				h = size
+				v = 8
+			}
+			return DuoUIdrawRectangle(gtx, h, v, color, [4]float32{0, 0, 0, 0}, [4]float32{0, 0, 0, 0})
 		})
 	}
+}
+
+func toPointF(p image.Point) f32.Point {
+	return f32.Point{X: float32(p.X), Y: float32(p.Y)}
 }
