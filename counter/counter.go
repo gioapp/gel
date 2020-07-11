@@ -1,6 +1,8 @@
 package counter
 
-import "gioui.org/widget"
+import (
+	"gioui.org/widget"
+)
 
 type DuoUIcounter struct {
 	Value           int

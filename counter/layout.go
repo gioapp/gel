@@ -12,7 +12,6 @@ import (
 	"github.com/gioapp/gel/helper"
 	"github.com/gioapp/gel/theme"
 	"image"
-	"strconv"
 )
 
 type DuoUIcounterStyle struct {
@@ -20,16 +19,17 @@ type DuoUIcounterStyle struct {
 	decrease     *iconBtn
 	reset        *iconBtn
 	input        material.EditorStyle
-	pageFunction func(gtx layout.Context) layout.Dimensions
+	pageFunction func()
 	Font         text.Font
 	TextSize     unit.Value
 	TxColor      string
 	BgColor      string
 	BtnBgColor   string
 	shaper       text.Shaper
+	c            *DuoUIcounter
 }
 
-func DuoUIcounterSt(t *theme.DuoUItheme, cc *DuoUIcounter, pageFunction func(gtx layout.Context) layout.Dimensions) DuoUIcounterStyle {
+func DuoUIcounterSt(t *theme.DuoUItheme, cc *DuoUIcounter, pageFunction func()) DuoUIcounterStyle {
 	return DuoUIcounterStyle{
 		// ToDo Replace theme's buttons with counter exclusive buttons, set icons for increase/decrease
 		increase:     iconButton(t.T, t.Icons["counterPlusIcon"], cc.CounterIncrease, t.Colors["Primary"]),
@@ -44,12 +44,13 @@ func DuoUIcounterSt(t *theme.DuoUItheme, cc *DuoUIcounter, pageFunction func(gtx
 		BtnBgColor: t.Colors["Primary"],
 		TextSize:   unit.Dp(float32(18)),
 		shaper:     t.Shaper,
+		c:          cc,
 	}
 }
 
-func (c DuoUIcounterStyle) Layout(cc *DuoUIcounter, g layout.Context, th *material.Theme, label, value string) func(gtx layout.Context) layout.Dimensions {
+func (c DuoUIcounterStyle) Layout(g layout.Context, th *material.Theme, label, value string) func(gtx layout.Context) layout.Dimensions {
 	return func(gtx layout.Context) layout.Dimensions {
-		cc.CounterInput.SetText(value)
+		c.c.CounterInput.SetText(value)
 		hmin := g.Constraints.Min.X
 		vmin := g.Constraints.Min.Y
 		//txColor := c.TxColor
@@ -75,9 +76,9 @@ func (c DuoUIcounterStyle) Layout(cc *DuoUIcounter, g layout.Context, th *materi
 						Alignment: layout.Middle,
 					}.Layout(gtx,
 						layout.Rigid(func(gtx layout.Context) layout.Dimensions {
-							for cc.CounterDecrease.Clicked() {
-								cc.Decrease()
-								c.pageFunction(gtx)
+							for c.c.CounterDecrease.Clicked() {
+								c.c.Decrease()
+								c.pageFunction()
 							}
 							return c.decrease.Layout(gtx)
 						}),
@@ -105,12 +106,12 @@ func (c DuoUIcounterStyle) Layout(cc *DuoUIcounter, g layout.Context, th *materi
 										layout.Rigid(func(gtx layout.Context) layout.Dimensions {
 											c.input.Font.Typeface = c.Font.Typeface
 											c.input.Color = helper.HexARGB(c.TxColor)
-											for _, e := range cc.CounterInput.Events() {
+											for _, e := range c.c.CounterInput.Events() {
 												switch e.(type) {
 												case widget.ChangeEvent:
-													if i, err := strconv.Atoi(cc.CounterInput.Text()); err == nil {
-														cc.Value = i
-													}
+													//if i, err := strconv.Atoi(c.c.CounterInput.Text()); err == nil {
+													//	c.c.Value = i
+													//}
 												}
 											}
 											return c.input.Layout(gtx)
@@ -156,9 +157,9 @@ func (c DuoUIcounterStyle) Layout(cc *DuoUIcounter, g layout.Context, th *materi
 						//	// }.Layout(gtx, c.shaper, c.Font, unit.Dp(12), value)
 						//}),
 						layout.Rigid(func(gtx layout.Context) layout.Dimensions {
-							for cc.CounterIncrease.Clicked() {
-								cc.Increase()
-								c.pageFunction(gtx)
+							for c.c.CounterIncrease.Clicked() {
+								c.c.Increase()
+								c.pageFunction()
 							}
 							return c.increase.Layout(gtx)
 						}))
