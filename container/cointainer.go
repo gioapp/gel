@@ -1,9 +1,7 @@
 package container
 
 import (
-	"gioui.org/f32"
 	"gioui.org/layout"
-	"gioui.org/op/clip"
 	"gioui.org/text"
 	"gioui.org/unit"
 	"github.com/gioapp/gel/helper"
@@ -57,14 +55,14 @@ func (d DuoUIcontainerStyle) Layout(gtx layout.Context, direction layout.Directi
 	//}
 	return layout.Stack{Alignment: layout.W}.Layout(gtx,
 		layout.Expanded(func(gtx layout.Context) layout.Dimensions {
-			rr := float32(gtx.Px(unit.Dp(float32(d.CornerRadius))))
-			clip.Rect{
-				Rect: f32.Rectangle{Max: f32.Point{
-					X: float32(gtx.Constraints.Min.X),
-					Y: float32(gtx.Constraints.Min.Y),
-				}},
-				NE: rr, NW: rr, SE: rr, SW: rr,
-			}.Op(gtx.Ops).Add(gtx.Ops)
+			//rr := float32(gtx.Px(unit.Dp(float32(d.CornerRadius))))
+			//clip.Rect{
+			//Rect: f32.Rectangle{Max: f32.Point{
+			//	X: float32(gtx.Constraints.Min.X),
+			//	Y: float32(gtx.Constraints.Min.Y),
+			//}},
+			//NE: rr, NW: rr, SE: rr, SW: rr,
+			//}.Op(gtx.Ops).Add(gtx.Ops)
 			return helper.Fill(gtx, helper.HexARGB(d.Background))
 			//return pointer.Rect(image.Rectangle{Max: gtx.Now.Size}).Add(gtx.Ops)
 		}),

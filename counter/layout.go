@@ -1,9 +1,7 @@
 package counter
 
 import (
-	"gioui.org/f32"
 	"gioui.org/layout"
-	"gioui.org/op/clip"
 	"gioui.org/op/paint"
 	"gioui.org/text"
 	"gioui.org/unit"
@@ -57,14 +55,14 @@ func (c DuoUIcounterStyle) Layout(g layout.Context, th *material.Theme, label, v
 		bgColor := c.BgColor
 		return layout.Stack{Alignment: layout.Center}.Layout(g,
 			layout.Expanded(func(gtx layout.Context) layout.Dimensions {
-				rr := float32(g.Px(unit.Dp(0)))
-				clip.Rect{
-					Rect: f32.Rectangle{Max: f32.Point{
-						X: float32(g.Constraints.Min.X),
-						Y: float32(g.Constraints.Min.Y),
-					}},
-					NE: rr, NW: rr, SE: rr, SW: rr,
-				}.Op(g.Ops).Add(g.Ops)
+				//rr := float32(g.Px(unit.Dp(0)))
+				//clip.Rect{
+				//Rect: f32.Rectangle{Max: f32.Point{
+				//	X: float32(g.Constraints.Min.X),
+				//	Y: float32(g.Constraints.Min.Y),
+				//}},
+				//NE: rr, NW: rr, SE: rr, SW: rr,
+				//}.Op(g.Ops).Add(g.Ops)
 				return helper.Fill(g, helper.HexARGB(bgColor))
 			}),
 			layout.Stacked(func(gtx layout.Context) layout.Dimensions {
