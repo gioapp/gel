@@ -2,6 +2,7 @@ package icontextbtn
 
 import (
 	"gioui.org/layout"
+	"gioui.org/text"
 	"gioui.org/unit"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
@@ -17,7 +18,8 @@ type IconTextButton struct {
 	Icon         *widget.Icon
 	IconColor    string
 	IconSize     unit.Value
-	Word         string
+	Text         string
+	TextSize     unit.Value
 	CornerRadius unit.Value
 	Axis         layout.Axis
 }
@@ -29,7 +31,8 @@ func IconTextBtn(t *material.Theme, b *widget.Clickable, i *widget.Icon, is unit
 		Icon:      i,
 		IconColor: c,
 		IconSize:  is,
-		Word:      w,
+		Text:      w,
+		TextSize:  unit.Dp(16),
 	}
 }
 
@@ -37,18 +40,19 @@ func (b IconTextButton) Layout(gtx layout.Context) layout.Dimensions {
 	bb := material.ButtonLayout(b.Theme, b.Button)
 	bb.CornerRadius = b.CornerRadius
 	bb.Background = b.Background
-
 	return bb.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
-
-		return layout.UniformInset(unit.Dp(8)).Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+		return layout.UniformInset(unit.Dp(4)).Layout(gtx, func(gtx layout.Context) layout.Dimensions {
 			gtx.Constraints.Min.X = gtx.Constraints.Max.X
+			var razmak float32
+			if b.Axis != layout.Horizontal {
+				razmak = 4
+			}
 			iconAndLabel := layout.Flex{Axis: b.Axis, Alignment: layout.Middle, Spacing: layout.SpaceBetween}
-			textIconSpacer := unit.Dp(8)
-
 			layIcon := layout.Rigid(func(gtx layout.Context) layout.Dimensions {
-				return layout.Inset{Right: textIconSpacer}.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+				return layout.Inset{}.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
 					var d layout.Dimensions
 					if b.Icon != nil {
+						//size := gtx.Px(b.IconSize) - 2*gtx.Px(unit.Dp(16))
 						size := gtx.Px(b.IconSize) - 2*gtx.Px(unit.Dp(16))
 						b.Icon.Color = helper.HexARGB(b.IconColor)
 						b.Icon.Layout(gtx, unit.Px(float32(size)))
@@ -61,8 +65,10 @@ func (b IconTextButton) Layout(gtx layout.Context) layout.Dimensions {
 			})
 
 			layLabel := layout.Rigid(func(gtx layout.Context) layout.Dimensions {
-				return layout.Inset{Left: textIconSpacer}.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
-					l := material.Body1(b.Theme, b.Word)
+				return layout.Inset{Top: unit.Dp(razmak)}.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+					l := material.Body1(b.Theme, b.Text)
+					l.TextSize = unit.Dp(12)
+					l.Alignment = text.Middle
 					l.Color = b.Theme.Color.InvText
 					return l.Layout(gtx)
 				})

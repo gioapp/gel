@@ -44,7 +44,7 @@ func NewDuoUItheme() *DuoUItheme {
 	}
 	t.Colors = NewDuoUIcolors()
 	t.TextSize = unit.Sp(16)
-	t.Icons = NewDuoUIicons()
+	//t.Icons = NewDuoUIicons()
 	return t
 }
 
