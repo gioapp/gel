@@ -80,3 +80,11 @@ func (d DuoUIcontainerStyle) Layout(gtx layout.Context, direction layout.Directi
 		}),
 	)
 }
+
+func DuoUIborder(theme *theme.DuoUItheme, body layout.Dimensions, gtx layout.Context) layout.Dimensions {
+	return DuoUIcontainer(theme, 1, theme.Colors["DarkGrayI"]).Layout(gtx, layout.Center, func(gtx layout.Context) layout.Dimensions {
+		return DuoUIcontainer(theme, 0, theme.Colors["White"]).Layout(gtx, layout.Center, func(gtx layout.Context) layout.Dimensions {
+			return body
+		})
+	})
+}

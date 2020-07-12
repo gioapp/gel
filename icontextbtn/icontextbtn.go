@@ -16,16 +16,19 @@ type IconTextButton struct {
 	Background   color.RGBA
 	Icon         *widget.Icon
 	IconColor    string
+	IconSize     unit.Value
 	Word         string
 	CornerRadius unit.Value
+	Axis         layout.Axis
 }
 
-func IconTextBtn(t *material.Theme, b *widget.Clickable, i *widget.Icon, c, w string) IconTextButton {
+func IconTextBtn(t *material.Theme, b *widget.Clickable, i *widget.Icon, is unit.Value, c, w string) IconTextButton {
 	return IconTextButton{
 		Theme:     t,
 		Button:    b,
 		Icon:      i,
 		IconColor: c,
+		IconSize:  is,
 		Word:      w,
 	}
 }
@@ -36,16 +39,17 @@ func (b IconTextButton) Layout(gtx layout.Context) layout.Dimensions {
 	bb.Background = b.Background
 
 	return bb.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+
 		return layout.UniformInset(unit.Dp(8)).Layout(gtx, func(gtx layout.Context) layout.Dimensions {
 			gtx.Constraints.Min.X = gtx.Constraints.Max.X
-			iconAndLabel := layout.Flex{Axis: layout.Horizontal, Alignment: layout.Middle, Spacing: layout.SpaceBetween}
+			iconAndLabel := layout.Flex{Axis: b.Axis, Alignment: layout.Middle, Spacing: layout.SpaceBetween}
 			textIconSpacer := unit.Dp(8)
 
 			layIcon := layout.Rigid(func(gtx layout.Context) layout.Dimensions {
 				return layout.Inset{Right: textIconSpacer}.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
 					var d layout.Dimensions
 					if b.Icon != nil {
-						size := gtx.Px(unit.Dp(56)) - 2*gtx.Px(unit.Dp(16))
+						size := gtx.Px(b.IconSize) - 2*gtx.Px(unit.Dp(16))
 						b.Icon.Color = helper.HexARGB(b.IconColor)
 						b.Icon.Layout(gtx, unit.Px(float32(size)))
 						d = layout.Dimensions{
@@ -63,8 +67,13 @@ func (b IconTextButton) Layout(gtx layout.Context) layout.Dimensions {
 					return l.Layout(gtx)
 				})
 			})
-
-			return iconAndLabel.Layout(gtx, layIcon, layLabel)
+			layOne := layIcon
+			layTwo := layLabel
+			if b.Axis != layout.Vertical {
+				layOne = layLabel
+				layTwo = layIcon
+			}
+			return iconAndLabel.Layout(gtx, layOne, layTwo)
 		})
 	})
 }
