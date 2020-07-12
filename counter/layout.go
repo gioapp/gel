@@ -13,27 +13,26 @@ import (
 )
 
 type DuoUIcounterStyle struct {
-	increase     *iconBtn
-	decrease     *iconBtn
-	reset        *iconBtn
-	input        material.EditorStyle
-	pageFunction func()
-	Font         text.Font
-	TextSize     unit.Value
-	TxColor      string
-	BgColor      string
-	BtnBgColor   string
-	shaper       text.Shaper
-	c            *DuoUIcounter
+	increase   *iconBtn
+	decrease   *iconBtn
+	reset      *iconBtn
+	input      material.EditorStyle
+	Font       text.Font
+	TextSize   unit.Value
+	TxColor    string
+	BgColor    string
+	BtnBgColor string
+	shaper     text.Shaper
+	c          *DuoUIcounter
 }
 
-func DuoUIcounterSt(t *theme.DuoUItheme, cc *DuoUIcounter, pageFunction func()) DuoUIcounterStyle {
+func DuoUIcounterSt(t *theme.DuoUItheme, cc *DuoUIcounter) DuoUIcounterStyle {
 	return DuoUIcounterStyle{
 		// ToDo Replace theme's buttons with counter exclusive buttons, set icons for increase/decrease
-		increase:     iconButton(t.T, t.Icons["counterPlusIcon"], cc.CounterIncrease, t.Colors["Primary"]),
-		decrease:     iconButton(t.T, t.Icons["counterMinusIcon"], cc.CounterDecrease, t.Colors["Primary"]),
-		input:        material.Editor(t.T, cc.CounterInput, "0"),
-		pageFunction: pageFunction,
+		increase: iconButton(t.T, t.Icons["counterPlusIcon"], cc.CounterIncrease, t.Colors["Primary"]),
+		decrease: iconButton(t.T, t.Icons["counterMinusIcon"], cc.CounterDecrease, t.Colors["Primary"]),
+		input:    material.Editor(t.T, cc.CounterInput, "0"),
+		//pageFunction: pageFunction,
 		Font: text.Font{
 			Typeface: t.Fonts["Primary"],
 		},
@@ -76,7 +75,7 @@ func (c DuoUIcounterStyle) Layout(g layout.Context, th *material.Theme, label, v
 						layout.Rigid(func(gtx layout.Context) layout.Dimensions {
 							for c.c.CounterDecrease.Clicked() {
 								c.c.Decrease()
-								c.pageFunction()
+								c.c.PageFunction()
 							}
 							return c.decrease.Layout(gtx)
 						}),
@@ -98,7 +97,7 @@ func (c DuoUIcounterStyle) Layout(g layout.Context, th *material.Theme, label, v
 											//return widget.Label{
 											//	Alignment: text.Middle,
 											//}.Layout(gtx, c.shaper, c.Font, unit.Dp(8), label)
-											return material.Body1(th, label).Layout(gtx)
+											return material.Caption(th, label).Layout(gtx)
 											//return layout.Dimensions{}
 										}),
 										layout.Rigid(func(gtx layout.Context) layout.Dimensions {
@@ -157,7 +156,7 @@ func (c DuoUIcounterStyle) Layout(g layout.Context, th *material.Theme, label, v
 						layout.Rigid(func(gtx layout.Context) layout.Dimensions {
 							for c.c.CounterIncrease.Clicked() {
 								c.c.Increase()
-								c.pageFunction()
+								c.c.PageFunction()
 							}
 							return c.increase.Layout(gtx)
 						}))
@@ -190,7 +189,7 @@ func (b iconBtn) Layout(gtx layout.Context) layout.Dimensions {
 	btn.CornerRadius = unit.Dp(0)
 	btn.Background = helper.HexARGB(b.bg)
 	return btn.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
-		return layout.UniformInset(unit.Dp(0)).Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+		return layout.UniformInset(unit.Dp(8)).Layout(gtx, func(gtx layout.Context) layout.Dimensions {
 			iconAndLabel := layout.Flex{Axis: layout.Horizontal, Alignment: layout.Middle}
 			layIcon := layout.Rigid(func(gtx layout.Context) layout.Dimensions {
 				return layout.Inset{}.Layout(gtx, func(gtx layout.Context) layout.Dimensions {

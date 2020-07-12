@@ -9,6 +9,7 @@ type DuoUIcounter struct {
 	OperateValue    int
 	From            int
 	To              int
+	PageFunction    func()
 	CounterInput    *widget.Editor
 	CounterIncrease *widget.Clickable
 	CounterDecrease *widget.Clickable
