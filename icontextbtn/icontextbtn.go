@@ -67,7 +67,7 @@ func (b IconTextButton) Layout(gtx layout.Context) layout.Dimensions {
 			layLabel := layout.Rigid(func(gtx layout.Context) layout.Dimensions {
 				return layout.Inset{Top: unit.Dp(razmak)}.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
 					l := material.Body1(b.Theme, b.Text)
-					l.TextSize = unit.Dp(12)
+					l.TextSize = b.TextSize
 					l.Alignment = text.Middle
 					l.Color = b.Theme.Color.InvText
 					return l.Layout(gtx)
